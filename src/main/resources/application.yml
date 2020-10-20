@@ -1,0 +1,12 @@
+server:
+  port: 8090
+
+spring:
+  data:
+    mongodb:
+      authentication-database: admin
+      username: root
+      password: rootpassword
+      database: test_mongo
+      port: 27017
+      host: localhost
