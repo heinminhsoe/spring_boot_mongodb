@@ -12,7 +12,7 @@ public interface ProductService {
 
     ProductDto save(ProductDto product);
 
-    ProductDto update(ProductDto product);
+    ProductDto update(String id, ProductDto product);
 
     void delete(String id);
 }

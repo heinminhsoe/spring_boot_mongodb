@@ -13,6 +13,7 @@ import java.util.List;
 
 @Service
 public class ProductServiceImpl implements ProductService {
+    private static final String MSG_PRODUCT_NOT_FOUND = "Product not found";
 
     private final ProductMapper productMapper;
     private final ProductRepository productRepository;
@@ -32,11 +33,11 @@ public class ProductServiceImpl implements ProductService {
     }
 
     @Override
-    public ProductDto update(ProductDto productDto) {
+    public ProductDto update(String id, ProductDto productDto) {
 
-        Product product = productRepository.findById(productDto.getId())
+        Product product = productRepository.findById(id)
                 .orElseThrow(
-                        () -> new EntityNotFoundException()
+                        () -> new EntityNotFoundException(MSG_PRODUCT_NOT_FOUND)
                 );
 
         product = product.toBuilder()
@@ -55,7 +56,7 @@ public class ProductServiceImpl implements ProductService {
     public void delete(String id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(
-                        () -> new EntityNotFoundException()
+                        () -> new EntityNotFoundException(MSG_PRODUCT_NOT_FOUND)
                 );
 
         productRepository.delete(product);
@@ -72,7 +73,7 @@ public class ProductServiceImpl implements ProductService {
     public ProductDto findById(String id) {
         Product product = productRepository.findById(id)
                 .orElseThrow(
-                        () -> new EntityNotFoundException()
+                        () -> new EntityNotFoundException(MSG_PRODUCT_NOT_FOUND)
                 );
         return productMapper.toDto(product);
     }

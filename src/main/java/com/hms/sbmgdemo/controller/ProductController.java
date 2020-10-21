@@ -1,5 +1,6 @@
 package com.hms.sbmgdemo.controller;
 
+import com.hms.sbmgdemo.controller.api.ProductAPI;
 import com.hms.sbmgdemo.dto.ProductDto;
 import com.hms.sbmgdemo.service.ProductService;
 import org.springframework.http.HttpStatus;
@@ -9,8 +10,7 @@ import org.springframework.web.bind.annotation.*;
 import java.util.List;
 
 @RestController
-@RequestMapping("api/product")
-public class ProductController {
+public class ProductController implements ProductAPI {
 
     private final ProductService productService;
 
@@ -18,7 +18,7 @@ public class ProductController {
         this.productService = productService;
     }
 
-    @GetMapping
+    @Override
     public ResponseEntity<List<ProductDto>> findAll() {
         return new ResponseEntity<>(
                 productService.findAll(),
@@ -26,32 +26,32 @@ public class ProductController {
         );
     }
 
-    @GetMapping("/{id}")
-    public ResponseEntity<ProductDto> findById(@PathVariable String id) {
+    @Override
+    public ResponseEntity<ProductDto> findById(String id) {
         return new ResponseEntity<>(
                 productService.findById(id),
                 HttpStatus.OK
         );
     }
 
-    @PostMapping
-    public ResponseEntity<ProductDto> create(@RequestBody ProductDto product) {
+    @Override
+    public ResponseEntity<ProductDto> create(ProductDto product) {
         return new ResponseEntity<>(
                 productService.save(product),
                 HttpStatus.CREATED
         );
     }
 
-    @PutMapping
-    public ResponseEntity<ProductDto> update(@RequestBody ProductDto product) {
+    @Override
+    public ResponseEntity<ProductDto> update(String id, ProductDto product) {
         return new ResponseEntity<>(
-                productService.update(product),
+                productService.update(id, product),
                 HttpStatus.OK
         );
     }
 
-    @DeleteMapping("/{id}")
-    public ResponseEntity<Void> delete(@PathVariable String id) {
+    @Override
+    public ResponseEntity<Void> delete(String id) {
         productService.delete(id);
         return ResponseEntity.noContent().build();
     }
